@@ -16,7 +16,7 @@ import math
 
 """Loading the data"""
 def load_data():
-    url='https://drive.google.com/file/d/1dQBeGRmlh-2wQgmYxAe4b_q9satA87EI/view?usp=sharing'
+    url='https://drive.google.com/file/d/14ivwIcDzvN5pKUx8SxYGWGHjVaarN6Aw/view?usp=sharing'
     url='https://drive.google.com/uc?id=' + url.split('/')[-2]
     data = pd.read_csv(url)
     #data = pd.read_csv("forex.csv")
