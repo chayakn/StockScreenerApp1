@@ -34,8 +34,18 @@ with col1:
     \b\n
     <font size="4"> **Select Currency Pair** </font>\n
     """, unsafe_allow_html=True)
-    data = mfn.load_data()
-    st.write(data)
+    st.title("CSV File Uploader")
+
+    # File uploader
+    uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
+
+    if uploaded_file is not None:
+        # Read CSV file
+        df = pd.read_csv(uploaded_file)
+
+        # Display DataFrame
+        st.write("Preview of uploaded DataFrame:")
+        st.write(df)
     A_options, data=gen()
     cur_A = st.selectbox('Select first currency', A_options)
     A_data=data[data["A"]==cur_A]
