@@ -31,8 +31,7 @@ The function below split the exchange currency in the slug column and
 seperate the left and right currency to a new coulum respectively.
 """
 def slug_split(data):
-    data["A"]=[str(a).split("/")[0] for a in data["slug"]]
-    data["B"]=[str(a).split("/")[1] for a in data["slug"]]
+    data["A"]=[str(a).split("/")[0] for a in data["Stock"]]
     return data
 
 
