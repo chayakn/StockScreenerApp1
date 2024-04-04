@@ -21,8 +21,7 @@ import main_functions as mfn
 @st.experimental_memo
 def gen():
     data = mfn.load_data()
-    data["A"]=[str(a).split("/")[0] for a in data["slug"]]
-    data["B"]=[str(a).split("/")[1] for a in data["slug"]]
+    data["A"]=[str(a).split("/")[0] for a in data["Stock"]]
     A_options=list(sorted(data["A"].unique()))
     return A_options, data
 
@@ -166,6 +165,7 @@ with col2:
     * <font size="4"> [**Medium**](https://medium.com/@rshm.jp07/currency-foreign-exchange-rate-prediction-4630a118de0c) </font>
     ***
     """, unsafe_allow_html=True)
+    st.write(data)
 
     # visualization
     fig = px.line(weekly, y="close", x=weekly.index,
