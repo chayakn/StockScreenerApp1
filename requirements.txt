@@ -1,0 +1,8 @@
+seaborn
+pmdarima
+statsmodels
+scikit-learn
+pystan
+prophet
+datetime
+plotly
