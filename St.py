@@ -34,6 +34,7 @@ with col1:
     \b\n
     <font size="4"> **Select Currency Pair** </font>\n
     """, unsafe_allow_html=True)
+    data = mfn.load_data()
     st.write(data)
     A_options, data=gen()
     cur_A = st.selectbox('Select first currency', A_options)
