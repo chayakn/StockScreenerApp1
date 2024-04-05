@@ -58,7 +58,14 @@ def prophet_forecast(data):
     df = data.reset_index().rename(columns={'Date': 'ds', 'Close': 'y'})
     model = Prophet(daily_seasonality=False)
     model.fit(df)
-    future = model.make_future_dataframe(periods=30)  # Forecast for the next 30 days
+    
+    # Calculate the last date in the dataset
+    last_date = data.index[-1]
+    
+    # Make future dataframe starting from the day after the last date in the dataset
+    future = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=30, freq='D')
+    future = pd.DataFrame({'ds': future})
+    
     forecast = model.predict(future)
     return forecast
 
