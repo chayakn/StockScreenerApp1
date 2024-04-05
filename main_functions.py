@@ -16,10 +16,10 @@ import math
 
 """Loading the data"""
 def load_data():
-    url='https://drive.google.com/file/d/14ivwIcDzvN5pKUx8SxYGWGHjVaarN6Aw/view?usp=sharing'
+    url='https://drive.google.com/file/d/1riceAkRePuCgkG9QzhJ56-2EyQHUK3Qv/view?usp=sharing'
+
     url='https://drive.google.com/uc?id=' + url.split('/')[-2]
     data = pd.read_csv(url)
-    #data = pd.read_csv("forex.csv")
     return data
 
 """data preview"""
@@ -31,7 +31,8 @@ The function below split the exchange currency in the slug column and
 seperate the left and right currency to a new coulum respectively.
 """
 def slug_split(data):
-    data["A"]=[str(a).split("/")[0] for a in data["Stock"]]
+    data["A"]=[str(a).split("/")[0] for a in data["slug"]]
+    data["B"]=[str(a).split("/")[1] for a in data["slug"]]
     return data
 
 
