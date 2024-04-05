@@ -32,40 +32,23 @@ with col1:
     </p>\b\n
     \b\n
     \b\n
-    <font size="4"> **Select Currency Pair** </font>\n
+    <font size="4"> **Select Stock** </font>\n
     """, unsafe_allow_html=True)
-    st.title("CSV File Uploader")
-
-    # File uploader
-    uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
-
-    if uploaded_file is not None:
-        # Read CSV file
-        df = pd.read_csv(uploaded_file)
-
-        # Display DataFrame
-        st.write("Preview of uploaded DataFrame:")
-        st.write(df)
-    A_options, data=gen()
-    cur_A = st.selectbox('Select first currency', A_options)
-    A_data=data[data["A"]==cur_A]
-    B_options = list(sorted(A_data["B"].unique()))
-    cur_B = st.selectbox('Select second currency', B_options)
     
-    Alist=[]
-    for b in A_data["B"].unique():
-      #print(b,A_data[A_data["B"]==b].shape)
-      Alist.append(A_data[A_data["B"]==b])
 
-    cur_map={x:y for y,x in zip(Alist,A_data["B"].unique())}
-
-    A_B=cur_map[cur_B]
-    A_B=A_B.set_index(A_B.date)
-    A_B.index=pd.to_datetime(A_B.date)
+    
+    A_options, data=gen()
+    cur_A = st.selectbox('Select Stock', A_options)
+    A_data=data[data["A"]==cur_A]
+    
+   
 
     #upsample to weekly records using mean
-    weekly = A_B.resample('W', label='left',closed = 'left').mean(numeric_only=True)
+    weekly = A_data.resample('W', label='left',closed = 'left').mean(numeric_only=True)
     weekly["close"]=weekly["close"].ffill()
+    weekly["open"]=weekly["open"].ffill()
+    weekly["high"]=weekly["close"].ffill()
+    weekly["low"]=weekly["low"].ffill()
     df_close = weekly['close']
 
 #@st.experimental_memo
