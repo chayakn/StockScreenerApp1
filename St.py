@@ -116,7 +116,7 @@ def main():
     data.set_index('Date', inplace=True)
 
     # Sidebar - Select stock and forecast date range
-    st.sidebar.title("Select Stock and Forecast Date Range")
+    st.sidebar.title("Select Stock data to be filtered")
     cur_A = st.sidebar.selectbox('Choose Stock', sorted(data['Stock'].unique()))
     
     # Button to display all stock data
