@@ -115,9 +115,7 @@ def main():
     # Sidebar - Select stock and forecast date range
     st.sidebar.title("Select Stock and Forecast Date Range")
     cur_A = st.sidebar.selectbox('Choose Stock', sorted(data['Stock'].unique()))
-    start_date = st.sidebar.date_input('Select Start Date')
-    end_date = st.sidebar.date_input('Select End Date')
-
+    
     # Button to display all stock data
     if st.sidebar.button("ALL STOCK DATA"):
         # Calculate metrics for all stocks
