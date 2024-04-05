@@ -1,22 +1,10 @@
 import streamlit as st
-st. set_page_config(layout="wide")
-col1, col2 = st.columns([1, 3], gap = 'medium')
-import numpy as np
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-from statsmodels.tsa.stattools import adfuller
-from statsmodels.tsa.seasonal import seasonal_decompose
-from statsmodels.tsa.arima.model import ARIMA
-from prophet import Prophet
-from sklearn.metrics import mean_squared_error, mean_absolute_error
-import plotly.express as px
 import plotly.graph_objects as go
-import math
-from datetime import datetime, timedelta
-import plotly.offline as po
+import matplotlib.pyplot as plt
+from prophet import Prophet
 
-@st.experimental_memo
+# Function to decompose time series into trend, seasonal, and residual components
 def decompose_time_series(data):
     result = seasonal_decompose(data, model='additive', period=1)
     trend = result.trend
@@ -54,20 +42,21 @@ def plot_decomposed_components(trend, seasonal, residual):
     st.pyplot(fig)
 
 # Function to perform Prophet forecast
-def prophet_forecast(data, forecast_date):
+def prophet_forecast(data, start_date, end_date):
     df = data.reset_index().rename(columns={'Date': 'ds', 'Close': 'y'})
     model = Prophet(daily_seasonality=False)
     model.fit(df)
-    future = pd.DataFrame({'ds': [forecast_date]})
+    future = pd.date_range(start=start_date, end=end_date, freq='D')
+    future = pd.DataFrame({'ds': future})
     forecast = model.predict(future)
     return forecast
 
 # Function to plot Prophet forecast
-def plot_prophet_forecast(data, forecast, forecast_date):
+def plot_prophet_forecast(data, forecast):
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=data.index, y=data['Close'], mode='lines', name='Close Price'))
-    fig.add_trace(go.Scatter(x=[forecast_date], y=forecast['yhat'], mode='markers', name='Forecasted Price', marker=dict(color='orange')))
-    fig.update_layout(title=f'Prophet Forecast for {forecast_date}', xaxis_title='Date', yaxis_title='Price')
+    fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat'], mode='lines', name='Forecast', line=dict(color='orange')))
+    fig.update_layout(title='Prophet Forecast', xaxis_title='Date', yaxis_title='Price')
     return fig
 
 # Main function
@@ -83,10 +72,11 @@ def main():
     data['Date'] = pd.to_datetime(data['Date'])
     data.set_index('Date', inplace=True)
 
-    # Sidebar - Select stock and forecast date
-    st.sidebar.title("Select Stock and Forecast Date")
+    # Sidebar - Select stock and forecast date range
+    st.sidebar.title("Select Stock and Forecast Date Range")
     cur_A = st.sidebar.selectbox('Choose Stock', sorted(data['Stock'].unique()))
-    forecast_date = st.sidebar.date_input('Select Forecast Date')
+    start_date = st.sidebar.date_input('Select Start Date')
+    end_date = st.sidebar.date_input('Select End Date')
 
     # Filter data for selected stock
     selected_data = data[data['Stock'] == cur_A]
@@ -106,8 +96,8 @@ def main():
 
     # Prophet Forecast
     st.subheader("Prophet Forecast")
-    forecast = prophet_forecast(selected_data, forecast_date)
-    fig_forecast = plot_prophet_forecast(selected_data, forecast, forecast_date)
+    forecast = prophet_forecast(selected_data, start_date, end_date)
+    fig_forecast = plot_prophet_forecast(selected_data, forecast)
     st.plotly_chart(fig_forecast)
 
 if __name__ == "__main__":
