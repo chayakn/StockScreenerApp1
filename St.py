@@ -104,7 +104,7 @@ def main():
     st.markdown("""
     <p align="center">
     <img width="230" height="150" src="https://github.com/TelRich/Currency-Foreign-Exchange-Rates/raw/main/image/2023-02-09-09-35-08.png">
-    </p>\b\n
+    </p>\b\n""")
     st.title("Stock Screener")
 
     # Load data
