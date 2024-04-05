@@ -124,7 +124,7 @@ def main():
         # Calculate metrics for all stocks
         summary_data = calculate_metrics_for_all_stocks(data)
         st.subheader("Summary Statistics of All Stocks")
-        st.write(summary_data)
+        st.dataframe(summary_data)
 
     # Filter data for selected stock
     selected_data = data[data['Stock'] == cur_A]
