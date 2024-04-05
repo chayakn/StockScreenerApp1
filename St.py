@@ -54,14 +54,13 @@ def plot_decomposed_components(trend, seasonal, residual):
     st.pyplot(fig)
 
 # Function to perform Prophet forecast
-def prophet_forecast(data, start_date, end_date):
+def prophet_forecast(data):
     df = data.reset_index().rename(columns={'Date': 'ds', 'Close': 'y'})
     model = Prophet(daily_seasonality=False)
     model.fit(df)
-    future = pd.date_range(start=start_date, end=end_date, freq='D')
-    future = pd.DataFrame({'ds': future})
+    future = model.make_future_dataframe(periods=30)  # Forecast for the next 30 days
     forecast = model.predict(future)
-    return forecast[['ds', 'yhat']]
+    return forecast
 
 # Function to plot Prophet forecast
 def plot_prophet_forecast(data, forecast):
@@ -84,11 +83,9 @@ def main():
     data['Date'] = pd.to_datetime(data['Date'])
     data.set_index('Date', inplace=True)
 
-    # Sidebar - Select stock and forecast date range
-    st.sidebar.title("Select Stock and Forecast Date Range")
+    # Sidebar - Select stock
+    st.sidebar.title("Select Stock")
     cur_A = st.sidebar.selectbox('Choose Stock', sorted(data['Stock'].unique()))
-    start_date = st.sidebar.date_input('Select Start Date')
-    end_date = st.sidebar.date_input('Select End Date')
 
     # Filter data for selected stock
     selected_data = data[data['Stock'] == cur_A]
@@ -108,7 +105,7 @@ def main():
 
     # Prophet Forecast
     st.subheader("Prophet Forecast")
-    forecast = prophet_forecast(selected_data, start_date, end_date)
+    forecast = prophet_forecast(selected_data)
     fig_forecast = plot_prophet_forecast(selected_data, forecast)
     st.plotly_chart(fig_forecast)
 
