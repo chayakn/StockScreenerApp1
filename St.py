@@ -1,10 +1,22 @@
 import streamlit as st
+st. set_page_config(layout="wide")
+col1, col2 = st.columns([1, 3], gap = 'medium')
+import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
+import seaborn as sns
 import matplotlib.pyplot as plt
+from statsmodels.tsa.stattools import adfuller
+from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.arima.model import ARIMA
 from prophet import Prophet
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+import plotly.express as px
+import plotly.graph_objects as go
+import math
+from datetime import datetime, timedelta
+import plotly.offline as po
 
-# Function to decompose time series into trend, seasonal, and residual components
+@st.experimental_memo
 def decompose_time_series(data):
     result = seasonal_decompose(data, model='additive', period=1)
     trend = result.trend
