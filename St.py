@@ -63,7 +63,7 @@ def prophet_forecast(data):
     last_date = data.index[-1]
     
     # Make future dataframe starting from the day after the last date in the dataset
-    future = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=30, freq='D')
+    future = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=200, freq='D')
     future = pd.DataFrame({'ds': future})
     
     forecast = model.predict(future)
