@@ -28,13 +28,13 @@ def calculate_metrics_for_all_stocks(data):
         dividend_yield = np.random.uniform(0, 5)
         buy_hold_sell = 'Buy' if np.random.rand() < 0.5 else 'Sell'  # Random buy/sell recommendation
         
-        summary_data = summary_data.append({
-            'Stock': stock,
-            'Quarterly Sales Variance': quarterly_sales_variance,
-            'P/E': pe_ratio,
-            'Dividend Yield %': dividend_yield,
-            'Buy/Hold/Sell': buy_hold_sell
-        }, ignore_index=True)
+        summary_data = pd.concat([summary_data, pd.DataFrame({
+            'Stock': [stock],
+            'Quarterly Sales Variance': [quarterly_sales_variance],
+            'P/E': [pe_ratio],
+            'Dividend Yield %': [dividend_yield],
+            'Buy/Hold/Sell': [buy_hold_sell]
+        })], ignore_index=True)
 
     return summary_data
     
