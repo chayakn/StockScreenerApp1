@@ -101,11 +101,9 @@ def plot_prophet_forecast(data, forecast):
 
 # Main function
 def main():
-    st.markdown("""
-    <p align="center">
-    <img width="230" height="150" src="https://github.com/TelRich/Currency-Foreign-Exchange-Rates/raw/main/image/2023-02-09-09-35-08.png">
-    </p>\b\n""")
-    st.title("Stock Screener")
+    image_url = "https://github.com/swathi0710/StockScreenerApp1/blob/main/stock-market-6368031_640.jpg"
+    st.image(image_url, use_column_width=True)
+    st.title("<span style='color: blue;'>Stock Screener</span>", unsafe_allow_html=True)
 
     # Load data
     url = 'https://drive.google.com/file/d/1riceAkRePuCgkG9QzhJ56-2EyQHUK3Qv/view?usp=sharing'
