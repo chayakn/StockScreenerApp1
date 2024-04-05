@@ -61,13 +61,7 @@ def prophet_forecast(data, start_date, end_date):
     future = pd.date_range(start=start_date, end=end_date, freq='D')
     future = pd.DataFrame({'ds': future})
     forecast = model.predict(future)
-    
-    # Interpolate missing values
-    forecast.set_index('ds', inplace=True)
-    forecast = forecast.reindex(pd.date_range(start=start_date, end=end_date, freq='D'))
-    forecast['yhat'] = forecast['yhat'].interpolate(method='linear')
-    
-    return forecast
+    return forecast[['ds', 'yhat']]
 
 # Function to plot Prophet forecast
 def plot_prophet_forecast(data, forecast):
