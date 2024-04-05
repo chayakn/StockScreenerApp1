@@ -9,17 +9,14 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.arima.model import ARIMA
 from prophet import Prophet
-from pmdarima.arima import auto_arima
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import plotly.express as px
 import plotly.graph_objects as go
 import math
 from datetime import datetime, timedelta
 import plotly.offline as po
-import main_functions as mfn
 
 @st.experimental_memo
-# Function to decompose time series into trend, seasonal, and residual components
 def decompose_time_series(data):
     result = seasonal_decompose(data, model='additive', period=1)
     trend = result.trend
@@ -56,6 +53,23 @@ def plot_decomposed_components(trend, seasonal, residual):
     axes[2].legend()
     st.pyplot(fig)
 
+# Function to perform Prophet forecast
+def prophet_forecast(data, forecast_date):
+    df = data.reset_index().rename(columns={'Date': 'ds', 'Close': 'y'})
+    model = Prophet(daily_seasonality=False)
+    model.fit(df)
+    future = pd.DataFrame({'ds': [forecast_date]})
+    forecast = model.predict(future)
+    return forecast
+
+# Function to plot Prophet forecast
+def plot_prophet_forecast(data, forecast, forecast_date):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=data.index, y=data['Close'], mode='lines', name='Close Price'))
+    fig.add_trace(go.Scatter(x=[forecast_date], y=forecast['yhat'], mode='markers', name='Forecasted Price', marker=dict(color='orange')))
+    fig.update_layout(title=f'Prophet Forecast for {forecast_date}', xaxis_title='Date', yaxis_title='Price')
+    return fig
+
 # Main function
 def main():
     st.title("Stock Screener")
@@ -65,9 +79,14 @@ def main():
     url = 'https://drive.google.com/uc?id=' + url.split('/')[-2]
     data = pd.read_csv(url)
 
-    # Sidebar - Select stock
-    st.sidebar.title("Select Stock")
+    # Convert 'Date' column to datetime format and set it as index
+    data['Date'] = pd.to_datetime(data['Date'])
+    data.set_index('Date', inplace=True)
+
+    # Sidebar - Select stock and forecast date
+    st.sidebar.title("Select Stock and Forecast Date")
     cur_A = st.sidebar.selectbox('Choose Stock', sorted(data['Stock'].unique()))
+    forecast_date = st.sidebar.date_input('Select Forecast Date')
 
     # Filter data for selected stock
     selected_data = data[data['Stock'] == cur_A]
@@ -84,6 +103,12 @@ def main():
     # Decompose time series into trend, seasonal, and residual components
     trend, seasonal, residual = decompose_time_series(selected_data['Close'])
     plot_decomposed_components(trend, seasonal, residual)
+
+    # Prophet Forecast
+    st.subheader("Prophet Forecast")
+    forecast = prophet_forecast(selected_data, forecast_date)
+    fig_forecast = plot_prophet_forecast(selected_data, forecast, forecast_date)
+    st.plotly_chart(fig_forecast)
 
 if __name__ == "__main__":
     main()
