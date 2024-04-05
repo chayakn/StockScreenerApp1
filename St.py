@@ -17,6 +17,27 @@ from datetime import datetime, timedelta
 import plotly.offline as po
 
 @st.experimental_memo
+def calculate_metrics_for_all_stocks(data):
+    summary_data = pd.DataFrame(columns=['Stock', 'Quarterly Sales Variance', 'P/E', 'Dividend Yield %', 'Buy/Hold/Sell'])
+
+    # Calculate metrics for each stock
+    for stock in data['Stock'].unique():
+        # Mock calculations for demonstration
+        quarterly_sales_variance = np.random.uniform(0, 10)
+        pe_ratio = np.random.uniform(5, 20)
+        dividend_yield = np.random.uniform(0, 5)
+        buy_hold_sell = 'Buy' if np.random.rand() < 0.5 else 'Sell'  # Random buy/sell recommendation
+        
+        summary_data = summary_data.append({
+            'Stock': stock,
+            'Quarterly Sales Variance': quarterly_sales_variance,
+            'P/E': pe_ratio,
+            'Dividend Yield %': dividend_yield,
+            'Buy/Hold/Sell': buy_hold_sell
+        }, ignore_index=True)
+
+    return summary_data
+    
 def decompose_time_series(data):
     result = seasonal_decompose(data, model='additive', period=1)
     trend = result.trend
@@ -86,21 +107,32 @@ def main():
     url = 'https://drive.google.com/uc?id=' + url.split('/')[-2]
     data = pd.read_csv(url)
 
+    
     # Convert 'Date' column to datetime format and set it as index
     data['Date'] = pd.to_datetime(data['Date'])
     data.set_index('Date', inplace=True)
 
-    # Sidebar - Select stock
-    st.sidebar.title("Select Stock")
+    # Sidebar - Select stock and forecast date range
+    st.sidebar.title("Select Stock and Forecast Date Range")
     cur_A = st.sidebar.selectbox('Choose Stock', sorted(data['Stock'].unique()))
+    start_date = st.sidebar.date_input('Select Start Date')
+    end_date = st.sidebar.date_input('Select End Date')
+
+    # Button to display all stock data
+    if st.sidebar.button("ALL STOCK DATA"):
+        # Calculate metrics for all stocks
+        summary_data = calculate_metrics_for_all_stocks(data)
+        st.subheader("Summary Statistics of All Stocks")
+        st.write(summary_data)
 
     # Filter data for selected stock
     selected_data = data[data['Stock'] == cur_A]
 
     # Display basic statistics and first few rows
-    display_basic_statistics(selected_data)
-    display_first_few_rows(selected_data)
-
+    st.subheader(f"Stock Price Analysis for {cur_A}")
+    st.write(selected_data.describe())
+    st.subheader("First Few Rows of Data")
+    st.write(selected_data.head())
     # Plot time series data
     st.subheader(f"Stock Price Analysis for {cur_A}")
     fig = plot_time_series(selected_data, f"Stock Price Analysis for {cur_A}")
