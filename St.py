@@ -166,12 +166,17 @@ def main():
     selected_data = data[data['Stock'] == cur_A]
     # Filter data for selected stock
     selected_data = data[data['Stock'] == cur_A]
-
+    columns_with_bidirectional_slider=['Open','High','Low','Close','Volume','Change Pct','RSI','MACD','MACD_Histogram','MACD_Signal']
+    # Filter Rows by close column
+    for col in columns_with_bidirectional_slider:
+        try:
+            low,up=bidirectional_slider(col, min_value=selected_data[col].min(), max_value=selected_data[col].max(), default_value=(0.0,30.0))
+            selected_data =selected_data[(selected_data[col]>=low) & (selected_data[col]<=up)]
+        except:
+            pass
     # Filter Rows by close column
     # close_slider = st.sidebar.slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max())
-    low,up=bidirectional_slider('Close Price', min_value=selected_data['Close'].min(), max_value=selected_data['Close'].max(), default_value=(0.0,30.0))
-    selected_data =selected_data[(selected_data['Close']>=low) & (selected_data['Close']<=up)]
-
+    
 
     # Display basic statistics and first few rows
     st.subheader(f"Stock Price Analysis for {cur_A}")
