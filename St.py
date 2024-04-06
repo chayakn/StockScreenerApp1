@@ -62,16 +62,16 @@ def calculate_metrics_for_all_stocks(data):
         quarterly_sales_variance = np.random.uniform(0, 10)
         pe_ratio = np.random.uniform(5, 20)
         dividend_yield = np.random.uniform(0, 5)
-        buy_hold_sell = 'Buy' if np.random.rand() < 0.5 else 'Sell'  # Random buy/sell recommendation
+        buy_hold_sell = 'Buy' if np.random.rand() < 0.5 else 'Sell' ;# Random buy/sell recommendation
         volume=np.random.uniform(1,10000000)
-	Market_cap=np.random.uniform(1,10000000)
+	market_cap=np.random.uniform(1,10000000)
 	Industry=np.random(['Healthcare','Basic Materials','Finacial','Consumer Defensive','Technology','Communication']
 	change=np.random.uniform(1.0,100.0)
         summary_data = pd.concat([summary_data, pd.DataFrame({
             'Stock': [stock],
 	    'Industry':[Industry],
 	    'Volume':[volume]
-	    'Market Capping':[Market_cap],
+	    'Market Capping':[market_cap],
 	    'Change percentage':[change]
             'Quarterly Sales Variance': [quarterly_sales_variance],
             'P/E': [pe_ratio],
