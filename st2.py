@@ -29,8 +29,8 @@ def calculate_metrics_for_all_stocks(data):
         pe_ratio = np.random.uniform(5, 20)
         dividend_yield = np.random.uniform(0, 5)
         buy_hold_sell = 'Buy' if np.random.rand() < 0.5 else 'Sell'  # Random buy/sell recommendation
-        volume = np.random.uniform(1, 10000000)
-        market_cap = np.random.uniform(1, 10000000)
+        volume = np.random.uniform(1, 1000000)
+        market_cap = np.random.uniform(1, 1000000)
         Industry = np.random.choice(['Healthcare', 'Basic Materials', 'Finacial', 'Consumer Defensive', 'Technology', 'Communication'])
         change = np.random.uniform(1.0, 100.0)
         summary_data = pd.concat([summary_data, pd.DataFrame({
@@ -49,11 +49,11 @@ def calculate_metrics_for_all_stocks(data):
         # Filter Rows by close column
         selected_data = summary_data
         for col in columns_with_bidirectional_slider:
-            # try:
-            low, up = bidirectional_slider(col, min_value=selected_data[col].min(), max_value=selected_data[col].max(), default_value=(0.0, 30.0))
-            selected_data = selected_data[(selected_data[col] >= low) & (selected_data[col] <= up)]
-            # except:
-            # pass
+            try:
+                low, up = bidirectional_slider(col, min_value=selected_data[col].min(), max_value=selected_data[col].max(), default_value=(0.0, 30.0))
+                selected_data = selected_data[(selected_data[col] >= low) & (selected_data[col] <= up)]
+            except:
+                pass
     return selected_data
  
 
