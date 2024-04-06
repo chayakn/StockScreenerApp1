@@ -197,6 +197,7 @@ def main():
         
         # Create a Plotly figure
         fig = go.Figure()
+        
 
         
        
@@ -234,5 +235,6 @@ def main():
 
 # Show plot
     fig.show()
+    st.plotly_chart(fig)
 if __name__ == "__main__":
     main()
