@@ -1,4 +1,4 @@
-Streamlit
+Streamlit 1.33.0
 seaborn
 pmdarima
 statsmodels
