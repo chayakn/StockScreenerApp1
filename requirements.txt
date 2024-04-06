@@ -6,5 +6,4 @@ pystan
 prophet
 datetime
 plotly
-audiorecorder
 google-generativeai
