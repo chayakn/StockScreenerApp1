@@ -167,8 +167,8 @@ def main():
 
     # Filter Rows by close column
     # close_slider = st.sidebar.slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max())
-    bidirectional_slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max(), default_value=(0.0,30.0)
-    selected_data =selected_data[(selected_data['Close'] <= close_slider)]
+    low,up=bidirectional_slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max(), default_value=(0.0,30.0)
+    selected_data =selected_data[(selected_data['Close']>=low) & (selected_data['Close']<=up)]
 
     # Display basic statistics and first few rows
     st.subheader(f"Stock Price Analysis for {cur_A}")
