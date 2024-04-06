@@ -160,7 +160,7 @@ def main():
 
     # Display basic statistics and first few rows
     st.subheader(f"Stock Price Analysis for {cur_A}")
-    st.write(selected_data.describe())
+    #st.write(selected_data.describe())
     st.subheader("First Few Rows of Data")
     st.write(selected_data.head())
     # Plot time series data
