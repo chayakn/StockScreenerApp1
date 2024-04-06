@@ -199,7 +199,7 @@ def main():
     Flag = True
     if st.sidebar.button("ALL STOCK DATA"):
         # Calculate metrics for all stocks
-        page2.main()
+        calculate_metrics_for_all_stocks(data)
         Flag = False
     if Flag:
         # Filter data for selected stock
