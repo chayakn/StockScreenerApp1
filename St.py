@@ -196,7 +196,7 @@ def main():
         data,Flag=calculate_metrics_for_all_stocks(data)
         columns_with_bidirectional_slider = ['Change percentage', 'P/E', 'Dividend Yield %']
         # Filter Rows by close column
-        data = summary_data
+
         for col in columns_with_bidirectional_slider:
             try:
                 low, up = bidirectional_slider(col, min_value=0, max_value=100, default_value=(0.0, 30.0))
