@@ -217,8 +217,8 @@ def main():
     st.plotly_chart(fig)
 
     prompt = st.chat_input("Ask Something")
-    if prompt:
-        st.write("hI")
+    if prompt != "":
+        st.write("HI")
 
     if len(selected_data)>0:
         # Sidebar control for moving average window size
