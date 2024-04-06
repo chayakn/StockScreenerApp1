@@ -6,4 +6,3 @@ pystan
 prophet
 datetime
 plotly
-TA-Lib
