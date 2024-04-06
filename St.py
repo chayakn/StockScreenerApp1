@@ -196,11 +196,11 @@ def main():
         fig = go.Figure()
         
         # Add original data traces
-        for col in df.columns[1:]:
+        for col in selected_df.columns[1:]:
             fig.add_trace(go.Scatter(x=selected_df['Date'], y=selected_df[col], mode='lines', name=col))
         
         # Add moving average traces
-        for col in df.columns[1:]:
+        for col in selected_df.columns[1:]:
             fig.add_trace(go.Scatter(x=selected_df['Date'], y=selected_df[f'{col} Moving Average'], mode='lines', name=f'{col} Moving Average', line=dict(color='red')))
         
         # Update layout
