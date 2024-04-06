@@ -132,6 +132,18 @@ def main():
     # Assign RSI values to the DataFrame
     data['RSI'] = rsi
 
+    #MACD
+    short_ema = data['Close'].ewm(span=12, adjust=False).mean()
+    long_ema = data['Close'].ewm(span=26, adjust=False).mean()
+    macd_line = short_ema - long_ema
+    signal_line = macd_line.ewm(span=macd_signal_period, adjust=False).mean()
+    macd_histogram = macd_line - signal_line
+
+
+    data['MACD'] = macd_line
+    data['MACD_Signal'] = signal_line
+    data['MACD_Histogram'] = macd_histogram
+
     # Sidebar - Select stock and forecast date range
     st.sidebar.title("Select Stock data to be filtered")
     cur_A = st.sidebar.selectbox('Choose Stock', sorted(data['Stock'].unique()))
