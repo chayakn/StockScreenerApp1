@@ -120,12 +120,12 @@ def main():
     delta = data['Close'].diff()
 
     # Separate gains and losses
-    gain = (delta.where(delta > 0, 0)).rolling(window=rsi_period).mean()
-    loss = (-delta.where(delta < 0, 0)).rolling(window=rsi_period).mean()
+    gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
 
     # Calculate RS (Relative Strength)
     rs = gain / loss
-
+    
     # Calculate RSI
     rsi = 100 - (100 / (1 + rs))
 
