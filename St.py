@@ -197,7 +197,7 @@ def main():
     # Button to display all stock data
     Flag = True
     # if st.sidebar.button("ALL STOCK DATA") or Flag==False:
-    while (Flag==False) or (t.sidebar.button("ALL STOCK DATA"):
+    while( (Flag==False) or (t.sidebar.button("ALL STOCK DATA"))):
         # Calculate metrics for all stocks
         data,Flag=calculate_metrics_for_all_stocks(data)
         columns_with_bidirectional_slider = ['Change percentage', 'P/E', 'Dividend Yield %']
