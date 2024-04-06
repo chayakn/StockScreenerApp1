@@ -26,7 +26,7 @@ def gem_chat():
 	
 	    if "chat" not in st.session_state:
 	      st.session_state.chat = model.start_chat(history=[])
-	    st.title('Gemini Pro Test')
+	    st.title('Ask me anything regarding stocks you want to know!!')
 	
 	    def role_to_streamlit(role: str) -> str:
 	      if role == 'model':
@@ -38,7 +38,7 @@ def gem_chat():
 	      with st.chat_message(role_to_streamlit(message.role)):
 	        st.markdown(message.parts[0].text)
 	
-	    if prompt := st.chat_input("I possess a well of knowledge. What would you like to know?"):
+	    if prompt := st.chat_input("I possess a well of knowledge about current and past stocks. What would you like to know?"):
 	      st.chat_message("user").markdown(prompt)
 	      response = st.session_state.chat.send_message(prompt)
 	      with st.chat_message("assistant"):
@@ -63,16 +63,32 @@ def calculate_metrics_for_all_stocks(data):
         pe_ratio = np.random.uniform(5, 20)
         dividend_yield = np.random.uniform(0, 5)
         buy_hold_sell = 'Buy' if np.random.rand() < 0.5 else 'Sell'  # Random buy/sell recommendation
-        
+        volume=np.random.uniform(1,10000000)
+	Market_cap=np.random.uniform(1,10000000)
+	Industry=np.random(['Healthcare','Basic Materials','Finacial','Consumer Defensive','Technology','Communication']
+	change=np.random.uniform(1.0,100.0)
         summary_data = pd.concat([summary_data, pd.DataFrame({
             'Stock': [stock],
+	    'Industry':[Industry],
+	    'Volume':[volume]
+	    'Market Capping':[Market_cap],
+	    'Change percentage':[change]
             'Quarterly Sales Variance': [quarterly_sales_variance],
             'P/E': [pe_ratio],
             'Dividend Yield %': [dividend_yield],
-            'Buy/Hold/Sell': [buy_hold_sell]
-        })], ignore_index=True)
+            'Buy/Hold/Sell': [buy_hold_sell],
 
-    return summary_data
+        })], ignore_index=True)
+    	columns_with_bidirectional_slider=['Volume','Market Capping','Change percentage','P/E','Dividend Yield %']
+        # Filter Rows by close column
+	selected_data=summary_data
+        for col in columns_with_bidirectional_slider:
+            try:
+                low,up=bidirectional_slider(col, min_value=selected_data[col].min(), max_value=selected_data[col].max(), default_value=(0.0,30.0))
+                selected_data =selected_data[(selected_data[col]>=low) & (selected_data[col]<=up)]
+            except:
+                pass
+    return selected_data
     
 def decompose_time_series(data):
     result = seasonal_decompose(data, model='additive', period=1)
