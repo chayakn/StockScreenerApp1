@@ -168,7 +168,7 @@ def main():
     st.subheader(f"Stock Price Analysis for {cur_A}")
     #st.write(selected_data.describe())
     st.subheader("First Few Rows of Data")
-    st.write(selected_data.head())
+    st.dataframe(selected_data)
     # Plot time series data
     st.subheader(f"Stock Price Analysis for {cur_A}")
     fig = plot_time_series(selected_data, f"Stock Price Analysis for {cur_A}")
