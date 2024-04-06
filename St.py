@@ -53,7 +53,7 @@ def bidirectional_slider(label, min_value, max_value, default_value):
     
 @st.experimental_memo
 def calculate_metrics_for_all_stocks(data):
-    global Flag = False
+    global Flag
     summary_data = pd.DataFrame(columns=['Stock', 'Quarterly Sales Variance', 'P/E', 'Dividend Yield %', 'Buy/Hold/Sell'])
 
     # Calculate metrics for each stock
