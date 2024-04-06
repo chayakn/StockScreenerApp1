@@ -14,6 +14,10 @@ import math
 from datetime import datetime, timedelta
 import plotly.offline as po
 
+def bidirectional_slider(label, min_value, max_value, default_value):
+    left_value, right_value = st.sidebar.slider(label, min_value=min_value, max_value=max_value, value=(min_value, max_value))
+    return left_value, right_value
+
 @st.experimental_memo
 def calculate_metrics_for_all_stocks(data):
     
