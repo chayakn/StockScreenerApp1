@@ -157,6 +157,11 @@ def main():
 
     # Filter data for selected stock
     selected_data = data[data['Stock'] == cur_A]
+    # Filter data for selected stock
+    selected_data = data[data['Stock'] == cur_A]
+
+    # Filter Rows by close column
+    close_slider = st.sidebar.slider('Close Price', min_value=df['Close'].min(), max_value=df['Close'].max())
 
     # Display basic statistics and first few rows
     st.subheader(f"Stock Price Analysis for {cur_A}")
