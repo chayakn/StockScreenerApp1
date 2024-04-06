@@ -189,19 +189,19 @@ def main():
         # Sidebar control for moving average window size
         window_size = st.sidebar.slider('Moving Average Window Size', min_value=1, max_value=30, value=10)
         # Calculate moving averages
-        for col in selected_df.columns[1:]:
-            selected_df[f'{col} Moving Average'] = selected_df[col].rolling(window=window_size).mean()
+        for col in selected_data.columns[1:]:
+            selected_df[f'{col} Moving Average'] = selected_data[col].rolling(window=window_size).mean()
         
         # Create a Plotly figure
         fig = go.Figure()
         
         # Add original data traces
-        for col in selected_df.columns[1:]:
-            fig.add_trace(go.Scatter(x=selected_df['Date'], y=selected_df[col], mode='lines', name=col))
+        for col in selected_data.columns[1:]:
+            fig.add_trace(go.Scatter(x=selected_data['Date'], y=selected_data[col], mode='lines', name=col))
         
         # Add moving average traces
         for col in selected_df.columns[1:]:
-            fig.add_trace(go.Scatter(x=selected_df['Date'], y=selected_df[f'{col} Moving Average'], mode='lines', name=f'{col} Moving Average', line=dict(color='red')))
+            fig.add_trace(go.Scatter(x=selected_data['Date'], y=selected_data[f'{col} Moving Average'], mode='lines', name=f'{col} Moving Average', line=dict(color='red')))
         
         # Update layout
         fig.update_layout(title='Moving Average Plot for Multiple Columns',
