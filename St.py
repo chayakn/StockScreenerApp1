@@ -166,7 +166,7 @@ def main():
     selected_data = data[data['Stock'] == cur_A]
     # Filter data for selected stock
     selected_data = data[data['Stock'] == cur_A]
-    columns_with_bidirectional_slider=['Open','High','Low','Close','Volume','Change Pct','RSI','MACD','MACD_Histogram','MACD_Signal']
+    columns_with_bidirectional_slider=['Open','Close','Volume','Change Pct','RSI','MACD']
     # Filter Rows by close column
     for col in columns_with_bidirectional_slider:
         try:
