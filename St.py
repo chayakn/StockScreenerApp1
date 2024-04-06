@@ -216,6 +216,10 @@ def main():
     fig = plot_time_series(selected_data, f"Stock Price Analysis for {cur_A}")
     st.plotly_chart(fig)
 
+    prompt = st.chat_input("Ask Something")
+    if prompt:
+        st.write("hI")
+
     if len(selected_data)>0:
         # Sidebar control for moving average window size
         # window_size = st.sidebar.slider('Moving Average Window Size', min_value=1, max_value=30, value=10)
