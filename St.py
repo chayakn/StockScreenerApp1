@@ -15,6 +15,7 @@ import plotly.graph_objects as go
 import math
 from datetime import datetime, timedelta
 import plotly.offline as po
+import st2 as page2
 
 def bidirectional_slider(label, min_value, max_value, default_value):
     left_value, right_value = st.sidebar.slider(label, min_value=min_value, max_value=max_value, value=(min_value, max_value))
@@ -157,10 +158,11 @@ def main():
     # Button to display all stock data
     if st.sidebar.button("ALL STOCK DATA"):
         # Calculate metrics for all stocks
-        st.dataframe(data)
-        summary_data = calculate_metrics_for_all_stocks(data)
-        st.subheader("Summary Statistics of All Stocks")
-        st.dataframe(summary_data)
+        page2.show()
+        # st.dataframe(data)
+        # summary_data = calculate_metrics_for_all_stocks(data)
+        # st.subheader("Summary Statistics of All Stocks")
+        # st.dataframe(summary_data)
 
     # Filter data for selected stock
     selected_data = data[data['Stock'] == cur_A]
