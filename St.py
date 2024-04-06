@@ -78,15 +78,16 @@ def calculate_metrics_for_all_stocks(data):
             'Buy/Hold/Sell': [buy_hold_sell],
         })], ignore_index=True)
         
-        columns_with_bidirectional_slider = ['Volume', 'Market Capping', 'Change percentage', 'P/E', 'Dividend Yield %']
+        # columns_with_bidirectional_slider = ['Volume', 'Market Capping', 'Change percentage', 'P/E', 'Dividend Yield %']
+        columns_with_bidirectional_slider = ['Change percentage', 'P/E', 'Dividend Yield %']
         # Filter Rows by close column
         selected_data = summary_data
-        for col in ['Market Capping']:
-            # try:
-            low, up = bidirectional_slider(col, min_value=selected_data[col].min(), max_value=selected_data[col].max(), default_value=(0.0, 30.0))
-            selected_data = selected_data[(selected_data[col] >= low) & (selected_data[col] <= up)]
-            # except:
-            # pass
+        for col in columns_with_bidirectional_slider:
+            try:
+                low, up = bidirectional_slider(col, min_value=selected_data[col].min(), max_value=selected_data[col].max(), default_value=(0.0, 30.0))
+                selected_data = selected_data[(selected_data[col] >= low) & (selected_data[col] <= up)]
+            except:
+                pass
     return selected_data
     
 def decompose_time_series(data):
