@@ -82,12 +82,12 @@ def calculate_metrics_for_all_stocks(data):
         columns_with_bidirectional_slider = ['Change percentage', 'P/E', 'Dividend Yield %']
         # Filter Rows by close column
         data = summary_data
-        # for col in columns_with_bidirectional_slider:
-        #     try:
-        #         low, up = bidirectional_slider(col, min_value=selected_data[col].min(), max_value=selected_data[col].max(), default_value=(0.0, 30.0))
-        #         selected_data = selected_data[(selected_data[col] >= low) & (selected_data[col] <= up)]
-        #     except:
-        #         pass
+        for col in columns_with_bidirectional_slider:
+            try:
+                low, up = bidirectional_slider(col, min_value=data[col].min(), max_value=data[col].max(), default_value=(0.0, 30.0))
+                data = data[(data[col] >= low) & (data[col] <= up)]
+            except:
+                pass
     return data
     
 def decompose_time_series(data):
