@@ -158,7 +158,7 @@ def main():
     # Button to display all stock data
     if st.sidebar.button("ALL STOCK DATA"):
         # Calculate metrics for all stocks
-        page2
+        page2.main()
         # st.dataframe(data)
         # summary_data = calculate_metrics_for_all_stocks(data)
         # st.subheader("Summary Statistics of All Stocks")
