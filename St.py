@@ -17,7 +17,7 @@ from datetime import datetime, timedelta
 import plotly.offline as po
 import st2 as page2
 import google.generativeai as genai
-
+global Flag=True
 def gem_chat():
     try:
         # gemini_api_key = os.environ['GOOGLE_GEMINI_KEY']
@@ -53,7 +53,7 @@ def bidirectional_slider(label, min_value, max_value, default_value):
     
 @st.experimental_memo
 def calculate_metrics_for_all_stocks(data):
-    
+    global Flag = False
     summary_data = pd.DataFrame(columns=['Stock', 'Quarterly Sales Variance', 'P/E', 'Dividend Yield %', 'Buy/Hold/Sell'])
 
     # Calculate metrics for each stock
@@ -84,11 +84,12 @@ def calculate_metrics_for_all_stocks(data):
         data = summary_data
         for col in columns_with_bidirectional_slider:
             try:
-                low, up = bidirectional_slider(col, min_value=data[col].min(), max_value=data[col].max(), default_value=(0.0, 30.0))
+                low, up = bidirectional_slider(col, min_value=0, max_value=100, default_value=(0.0, 30.0))
                 data = data[(data[col] >= low) & (data[col] <= up)]
             except:
                 pass
-    return data
+        Flag = False
+    return data,Flag
     
 def decompose_time_series(data):
     result = seasonal_decompose(data, model='additive', period=1)
@@ -200,7 +201,7 @@ def main():
     Flag = True
     if st.sidebar.button("ALL STOCK DATA"):
         # Calculate metrics for all stocks
-        data=calculate_metrics_for_all_stocks(data)
+        data,Flag=calculate_metrics_for_all_stocks(data)
         st.dataframe(data)
         Flag = False
     if Flag:
