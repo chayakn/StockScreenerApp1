@@ -189,19 +189,40 @@ def main():
     st.write(paginated_df)
     # st.dataframe(selected_data)
     # Plot time series data
+    
     st.subheader(f"Stock Price Analysis for {cur_A}")
+
+        # Create traces
+    trace_macd = go.Scatter(x=selected_data.index, y=selected_data['MACD'], mode='lines', name='MACD')
+    trace_signal = go.Scatter(x=selected_data.index, y=selected_data['MACD_Signal'], mode='lines', name='MACD Signal')
+    trace_histogram = go.Bar(x=selected_data.index, y=selected_data['MACD_Histogram'], name='MACD Histogram')
+
+# Create figure
+    fig = go.Figure()
+
+# Add traces to the figure
+    fig.add_trace(trace_macd)
+    fig.add_trace(trace_signal)
+    fig.add_trace(trace_histogram)
+
+# Update layout
+    fig.update_layout(title='MACD Analysis', xaxis_title='Date', yaxis_title='Value')
+
+# Show plot
+    fig.show()
+    st.plotly_chart(fig)
     fig = plot_time_series(selected_data, f"Stock Price Analysis for {cur_A}")
     st.plotly_chart(fig)
 
     if len(selected_data)>0:
         # Sidebar control for moving average window size
-        window_size = st.sidebar.slider('Moving Average Window Size', min_value=1, max_value=30, value=10)
-        # Calculate moving averages
-        for col in selected_data.columns[1:]:
-            selected_data[f'{col} Moving Average'] = selected_data[col].rolling(window=window_size).mean()
+        # window_size = st.sidebar.slider('Moving Average Window Size', min_value=1, max_value=30, value=10)
+        # # Calculate moving averages
+        # for col in selected_data.columns[1:]:
+        #     selected_data[f'{col} Moving Average'] = selected_data[col].rolling(window=window_size).mean()
         
-        # Create a Plotly figure
-        fig = go.Figure()
+        # # Create a Plotly figure
+        # fig = go.Figure()
         
 
         
@@ -222,24 +243,6 @@ def main():
             st.plotly_chart(fig_forecast)
         except:
             pass
-    # Create traces
-    trace_macd = go.Scatter(x=selected_data.index, y=selected_data['MACD'], mode='lines', name='MACD')
-    trace_signal = go.Scatter(x=selected_data.index, y=selected_data['MACD_Signal'], mode='lines', name='MACD Signal')
-    trace_histogram = go.Bar(x=selected_data.index, y=selected_data['MACD_Histogram'], name='MACD Histogram')
 
-# Create figure
-    fig = go.Figure()
-
-# Add traces to the figure
-    fig.add_trace(trace_macd)
-    fig.add_trace(trace_signal)
-    fig.add_trace(trace_histogram)
-
-# Update layout
-    fig.update_layout(title='MACD Analysis', xaxis_title='Date', yaxis_title='Value')
-
-# Show plot
-    fig.show()
-    st.plotly_chart(fig)
 if __name__ == "__main__":
     main()
