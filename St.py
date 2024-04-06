@@ -172,7 +172,7 @@ def main():
 
     start_date = st.sidebar.date_input("Start Date", min_value=data.index.min(), max_value=data.index.max() - timedelta(days=1), value=data.index.min())
     end_date = st.sidebar.date_input("End Date", min_value=data.index.min() + timedelta(days=1), max_value=data.index.max(), value=data.index.max())
-    selected_data = selected_data[(selected_data.index >= start_date) & (selected_data.index <= end_date)]
+    selected_data = selected_data[(selected_data.Date >= start_date) & (selected_data.Date <= end_date)]
 
     # Display basic statistics and first few rows
     st.subheader(f"Stock Price Analysis for {cur_A}")
