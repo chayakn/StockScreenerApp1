@@ -79,7 +79,7 @@ def calculate_metrics_for_all_stocks(data):
         })], ignore_index=True)
         
         # columns_with_bidirectional_slider = ['Volume', 'Market Capping', 'Change percentage', 'P/E', 'Dividend Yield %']
-
+        data=summary_data
         Flag = False
     return data,Flag
     
