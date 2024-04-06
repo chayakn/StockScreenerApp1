@@ -192,10 +192,12 @@ def main():
     # Sidebar - Select stock and forecast date range
     st.sidebar.title("Select Stock data to be filtered")
     cur_A = st.sidebar.selectbox('Choose Stock', sorted(data['Stock'].unique()))
-    
+    if cur_A:
+        Flag=True
     # Button to display all stock data
     Flag = True
-    if st.sidebar.button("ALL STOCK DATA") or Flag==False:
+    # if st.sidebar.button("ALL STOCK DATA") or Flag==False:
+    while (Flag==False or t.sidebar.button("ALL STOCK DATA"):
         # Calculate metrics for all stocks
         data,Flag=calculate_metrics_for_all_stocks(data)
         columns_with_bidirectional_slider = ['Change percentage', 'P/E', 'Dividend Yield %']
