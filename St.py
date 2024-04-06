@@ -226,34 +226,21 @@ def main():
             st.write(prompt)
     
         if len(selected_data)>0:
-            # Sidebar control for moving average window size
-            # window_size = st.sidebar.slider('Moving Average Window Size', min_value=1, max_value=30, value=10)
-            # # Calculate moving averages
-            # for col in selected_data.columns[1:]:
-            #     selected_data[f'{col} Moving Average'] = selected_data[col].rolling(window=window_size).mean()
-            
-            # # Create a Plotly figure
-            # fig = go.Figure()
-            
-    
-            
-           
-
-        # Decompose time series into trend, seasonal, and residual components
-        try:
-            trend, seasonal, residual = decompose_time_series(selected_data['Close'])
-            plot_decomposed_components(trend, seasonal, residual)
-        except:
-            pass
+                         
+            try:
+                trend, seasonal, residual = decompose_time_series(selected_data['Close'])
+                plot_decomposed_components(trend, seasonal, residual)
+            except:
+                pass
     
         # Prophet Forecast
-        try:
-            st.subheader("Prophet Forecast")
-            forecast = prophet_forecast(selected_data)
-            fig_forecast = plot_prophet_forecast(selected_data, forecast)
-            st.plotly_chart(fig_forecast)
-        except:
-            pass
+            try:
+                st.subheader("Prophet Forecast")
+                forecast = prophet_forecast(selected_data)
+                fig_forecast = plot_prophet_forecast(selected_data, forecast)
+                st.plotly_chart(fig_forecast)
+            except:
+                pass
 
 if __name__ == "__main__":
     main()
