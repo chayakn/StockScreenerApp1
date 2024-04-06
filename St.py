@@ -156,6 +156,7 @@ def main():
     cur_A = st.sidebar.selectbox('Choose Stock', sorted(data['Stock'].unique()))
     
     # Button to display all stock data
+    Flag=True
     if st.sidebar.button("ALL STOCK DATA"):
         # Calculate metrics for all stocks
         page2.main()
@@ -163,76 +164,80 @@ def main():
         # summary_data = calculate_metrics_for_all_stocks(data)
         # st.subheader("Summary Statistics of All Stocks")
         # st.dataframe(summary_data)
-
-    # Filter data for selected stock
-    selected_data = data[data['Stock'] == cur_A]
-    # Filter data for selected stock
-    selected_data = data[data['Stock'] == cur_A]
-    columns_with_bidirectional_slider=['Open','Close','Volume','Change Pct','RSI','MACD']
-    # Filter Rows by close column
-    for col in columns_with_bidirectional_slider:
-        try:
-            low,up=bidirectional_slider(col, min_value=selected_data[col].min(), max_value=selected_data[col].max(), default_value=(0.0,30.0))
-            selected_data =selected_data[(selected_data[col]>=low) & (selected_data[col]<=up)]
-        except:
-            pass
-    # Filter Rows by close column
-    # close_slider = st.sidebar.slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max())
+        Flag=False
+    if Flag:
+        
+        # Filter data for selected stock
+        selected_data = data[data['Stock'] == cur_A]
+        # Filter data for selected stock
+        selected_data = data[data['Stock'] == cur_A]
+        columns_with_bidirectional_slider=['Open','Close','Volume','Change Pct','RSI','MACD']
+        # Filter Rows by close column
+        for col in columns_with_bidirectional_slider:
+            try:
+                low,up=bidirectional_slider(col, min_value=selected_data[col].min(), max_value=selected_data[col].max(), default_value=(0.0,30.0))
+                selected_data =selected_data[(selected_data[col]>=low) & (selected_data[col]<=up)]
+            except:
+                pass
+        # Filter Rows by close column
+        # close_slider = st.sidebar.slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max())
+        
     
-
-    # Display basic statistics and first few rows
-    st.subheader(f"Stock Price Analysis for {cur_A}")
-    #st.write(selected_data.describe())
-
-    page_number = st.number_input('Page Number', min_value=1, max_value=len(selected_data) // 10 + 1, value=1)
-    start_idx = (page_number - 1) * 10
-    end_idx = min(start_idx + 10, len(selected_data))
-    paginated_df = selected_data.iloc[start_idx:end_idx]
-    st.write(paginated_df)
-    # st.dataframe(selected_data)
-    # Plot time series data
+        # Display basic statistics and first few rows
+        st.subheader(f"Stock Price Analysis for {cur_A}")
+        #st.write(selected_data.describe())
     
-    st.subheader(f"Stock Price Analysis for {cur_A}")
-
-        # Create traces
-    trace_macd = go.Scatter(x=selected_data.index, y=selected_data['MACD'], mode='lines', name='MACD')
-    trace_signal = go.Scatter(x=selected_data.index, y=selected_data['MACD_Signal'], mode='lines', name='MACD Signal')
-    trace_histogram = go.Bar(x=selected_data.index, y=selected_data['MACD_Histogram'], name='MACD Histogram')
-
-# Create figure
-    fig = go.Figure()
-
-# Add traces to the figure
-    fig.add_trace(trace_macd)
-    fig.add_trace(trace_signal)
-    fig.add_trace(trace_histogram)
-
-# Update layout
-    fig.update_layout(title='MACD Analysis', xaxis_title='Date', yaxis_title='Value')
-
-# Show plot
-    fig.show()
-    st.plotly_chart(fig)
-    fig = plot_time_series(selected_data, f"Stock Price Analysis for {cur_A}")
-    st.plotly_chart(fig)
-
-    prompt = st.chat_input("Ask Something")
-    if prompt != "":
-        st.write("HI")
-
-    if len(selected_data)>0:
-        # Sidebar control for moving average window size
-        # window_size = st.sidebar.slider('Moving Average Window Size', min_value=1, max_value=30, value=10)
-        # # Calculate moving averages
-        # for col in selected_data.columns[1:]:
-        #     selected_data[f'{col} Moving Average'] = selected_data[col].rolling(window=window_size).mean()
+        page_number = st.number_input('Page Number', min_value=1, max_value=len(selected_data) // 10 + 1, value=1)
+        start_idx = (page_number - 1) * 10
+        end_idx = min(start_idx + 10, len(selected_data))
+        paginated_df = selected_data.iloc[start_idx:end_idx]
+        st.write(paginated_df)
+        # st.dataframe(selected_data)
+        # Plot time series data
         
-        # # Create a Plotly figure
-        # fig = go.Figure()
-        
-
-        
-       
+        st.subheader(f"Stock Price Analysis for {cur_A}")
+    
+            # Create traces
+        trace_macd = go.Scatter(x=selected_data.index, y=selected_data['MACD'], mode='lines', name='MACD')
+        trace_signal = go.Scatter(x=selected_data.index, y=selected_data['MACD_Signal'], mode='lines', name='MACD Signal')
+        trace_histogram = go.Bar(x=selected_data.index, y=selected_data['MACD_Histogram'], name='MACD Histogram')
+    
+    # Create figure
+        fig = go.Figure()
+    
+    # Add traces to the figure
+        fig.add_trace(trace_macd)
+        fig.add_trace(trace_signal)
+        fig.add_trace(trace_histogram)
+    
+    # Update layout
+        fig.update_layout(title='MACD Analysis', xaxis_title='Date', yaxis_title='Value')
+    
+    # Show plot
+        fig.show()
+        st.plotly_chart(fig)
+        fig = plot_time_series(selected_data, f"Stock Price Analysis for {cur_A}")
+        st.plotly_chart(fig)
+    
+        prompt = st.chat_input("Ask Something")
+        if prompt != "":
+            st.write("HI")
+        else:
+            st.write(prompt)
+    
+        if len(selected_data)>0:
+            # Sidebar control for moving average window size
+            # window_size = st.sidebar.slider('Moving Average Window Size', min_value=1, max_value=30, value=10)
+            # # Calculate moving averages
+            # for col in selected_data.columns[1:]:
+            #     selected_data[f'{col} Moving Average'] = selected_data[col].rolling(window=window_size).mean()
+            
+            # # Create a Plotly figure
+            # fig = go.Figure()
+            
+    
+            
+           
 
         # Decompose time series into trend, seasonal, and residual components
         try:
