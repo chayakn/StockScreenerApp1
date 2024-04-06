@@ -43,9 +43,7 @@ def calculate_metrics_for_all_stocks(data):
 
 # Main function
 def main():
-    image_url = "https://github.com/swathi0710/StockScreenerApp1/blob/main/stock-market-6368031_640.jpg"
-    st.image(image_url, use_column_width=True)
-    st.markdown("<h2><span style='color: blue;'>Stock Screener</span></h2>", unsafe_allow_html=True)
+    
     url = 'https://drive.google.com/file/d/1riceAkRePuCgkG9QzhJ56-2EyQHUK3Qv/view?usp=sharing'
     url = 'https://drive.google.com/uc?id=' + url.split('/')[-2]
     data = pd.read_csv(url)
