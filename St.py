@@ -189,7 +189,7 @@ def main():
         # Sidebar control for moving average window size
         window_size = st.sidebar.slider('Moving Average Window Size', min_value=1, max_value=30, value=10)
         # Calculate moving averages
-        for col in df.columns[1:]:
+        for col in selected_df.columns[1:]:
             selected_df[f'{col} Moving Average'] = selected_df[col].rolling(window=window_size).mean()
         
         # Create a Plotly figure
