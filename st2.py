@@ -39,65 +39,9 @@ def calculate_metrics_for_all_stocks(data):
 
     return summary_data
     
-def decompose_time_series(data):
-    result = seasonal_decompose(data, model='additive', period=1)
-    trend = result.trend
-    seasonal = result.seasonal
-    residual = result.resid
-    return trend, seasonal, residual
 
-# Function to plot time series data
-def plot_time_series(data, title):
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=data.index, y=data['Close'], mode='lines', name='Close Price'))
-    fig.update_layout(title=title, xaxis_title='Date', yaxis_title='Price')
-    return fig
 
-# Function to display basic statistics
-def display_basic_statistics(data):
-    st.subheader("Basic Statistics")
-    st.write(data.describe())
 
-# Function to display first few rows of the dataset
-def display_first_few_rows(data):
-    st.subheader("First Few Rows of Data")
-    st.write(data.head())
-
-# Function to plot decomposed components
-def plot_decomposed_components(trend, seasonal, residual):
-    st.subheader("Seasonal Decomposition")
-    fig, axes = plt.subplots(3, 1, figsize=(10, 7), sharex=True)
-    axes[0].plot(trend, label='Trend')
-    axes[0].legend()
-    axes[1].plot(seasonal, label='Seasonal')
-    axes[1].legend()
-    axes[2].plot(residual, label='Residual')
-    axes[2].legend()
-    st.pyplot(fig)
-
-# Function to perform Prophet forecast
-def prophet_forecast(data):
-    df = data.reset_index().rename(columns={'Date': 'ds', 'Close': 'y'})
-    model = Prophet(daily_seasonality=False)
-    model.fit(df)
-    
-    # Calculate the last date in the dataset
-    last_date = data.index[-1]
-    
-    # Make future dataframe starting from the day after the last date in the dataset
-    future = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=200, freq='D')
-    future = pd.DataFrame({'ds': future})
-    
-    forecast = model.predict(future)
-    return forecast
-
-# Function to plot Prophet forecast
-def plot_prophet_forecast(data, forecast):
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=data.index, y=data['Close'], mode='lines', name='Close Price'))
-    fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat'], mode='lines', name='Forecast', line=dict(color='orange')))
-    fig.update_layout(title='Prophet Forecast', xaxis_title='Date', yaxis_title='Price')
-    return fig
 
 # Main function
 def main():
@@ -105,78 +49,15 @@ def main():
     st.image(image_url, use_column_width=True)
     st.markdown("<h2><span style='color: blue;'>Stock Screener</span></h2>", unsafe_allow_html=True)
 
-    # Load data
-    url = 'https://drive.google.com/file/d/1riceAkRePuCgkG9QzhJ56-2EyQHUK3Qv/view?usp=sharing'
-    url = 'https://drive.google.com/uc?id=' + url.split('/')[-2]
-    data = pd.read_csv(url)
+    # # Load data
+    # url = 'https://drive.google.com/file/d/1riceAkRePuCgkG9QzhJ56-2EyQHUK3Qv/view?usp=sharing'
+    # url = 'https://drive.google.com/uc?id=' + url.split('/')[-2]
+    # data = pd.read_csv(url)
+    data=calculate_metrics_for_all_stocks()
+    st.write(data)
     
-    
-    # Convert 'Date' column to datetime format and set it as index
-    data['Date'] = pd.to_datetime(data['Date'])
-    data.set_index('Date', inplace=True)
 
-
-    #rsi
-    delta = data['Close'].diff()
-
-    # Separate gains and losses
-    gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
-    loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
-
-    # Calculate RS (Relative Strength)
-    rs = gain / loss
-    
-    # Calculate RSI
-    rsi = 100 - (100 / (1 + rs))
-
-    # Assign RSI values to the DataFrame
-    data['RSI'] = rsi
-
-    #MACD
-    short_ema = data['Close'].ewm(span=12, adjust=False).mean()
-    long_ema = data['Close'].ewm(span=26, adjust=False).mean()
-    macd_line = short_ema - long_ema
-    signal_line = macd_line.ewm(span=12, adjust=False).mean()
-    macd_histogram = macd_line - signal_line
-
-
-    data['MACD'] = macd_line
-    data['MACD_Signal'] = signal_line
-    data['MACD_Histogram'] = macd_histogram
-
-    # Sidebar - Select stock and forecast date range
-    st.sidebar.title("Select Stock data to be filtered")
-    cur_A = st.sidebar.selectbox('Choose Stock', sorted(data['Stock'].unique()))
-    
-    # Button to display all stock data
-    if st.sidebar.button("ALL STOCK DATA"):
-        # Calculate metrics for all stocks
-        summary_data = calculate_metrics_for_all_stocks(data)
-        st.subheader("Summary Statistics of All Stocks")
-        st.dataframe(summary_data)
-
-    # Filter data for selected stock
-    selected_data = data[data['Stock'] == cur_A]
-
-    # Display basic statistics and first few rows
-    st.subheader(f"Stock Price Analysis for {cur_A}")
-    st.write(selected_data.describe())
-    st.subheader("First Few Rows of Data")
-    st.write(selected_data.head())
-    # Plot time series data
-    st.subheader(f"Stock Price Analysis for {cur_A}")
-    fig = plot_time_series(selected_data, f"Stock Price Analysis for {cur_A}")
-    st.plotly_chart(fig)
-
-    # Decompose time series into trend, seasonal, and residual components
-    trend, seasonal, residual = decompose_time_series(selected_data['Close'])
-    plot_decomposed_components(trend, seasonal, residual)
-
-    # Prophet Forecast
-    st.subheader("Prophet Forecast")
-    forecast = prophet_forecast(selected_data)
-    fig_forecast = plot_prophet_forecast(selected_data, forecast)
-    st.plotly_chart(fig_forecast)
+ 
 
 if __name__ == "__main__":
     main()
