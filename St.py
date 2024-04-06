@@ -50,7 +50,11 @@ def gem_chat():
 def bidirectional_slider(label, min_value, max_value, default_value):
     left_value, right_value = st.sidebar.slider(label, min_value=min_value, max_value=max_value, value=(min_value, max_value))
     return left_value, right_value
-    
+
+def bidirectional_slider_temp(label, min_value, max_value, default_value):
+    global Flag
+    left_value, right_value = st.sidebar.slider(label, min_value=min_value, max_value=max_value, value=(min_value, max_value))
+    return left_value, right_value,False
 @st.experimental_memo
 def calculate_metrics_for_all_stocks(data):
     global Flag
@@ -199,7 +203,7 @@ def main():
 
         for col in columns_with_bidirectional_slider:
             try:
-                low, up = bidirectional_slider(col, min_value=0, max_value=100, default_value=(0.0, 30.0))
+                low, up,Flag= bidirectional_slider_temp(col, min_value=0, max_value=100, default_value=(0.0, 30.0))
                 data = data[(data[col] >= low) & (data[col] <= up)]
             except:
                 pass
