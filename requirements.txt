@@ -6,3 +6,4 @@ pystan
 prophet
 datetime
 plotly
+talib
