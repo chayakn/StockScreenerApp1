@@ -186,6 +186,31 @@ def main():
     st.plotly_chart(fig)
 
     if len(selected_data)>0:
+        # Sidebar control for moving average window size
+        window_size = st.sidebar.slider('Moving Average Window Size', min_value=1, max_value=30, value=10)
+        # Calculate moving averages
+        for col in df.columns[1:]:
+            selected_df[f'{col} Moving Average'] = selected_df[col].rolling(window=window_size).mean()
+        
+        # Create a Plotly figure
+        fig = go.Figure()
+        
+        # Add original data traces
+        for col in df.columns[1:]:
+            fig.add_trace(go.Scatter(x=selected_df['Date'], y=selected_df[col], mode='lines', name=col))
+        
+        # Add moving average traces
+        for col in df.columns[1:]:
+            fig.add_trace(go.Scatter(x=selected_df['Date'], y=selected_df[f'{col} Moving Average'], mode='lines', name=f'{col} Moving Average', line=dict(color='red')))
+        
+        # Update layout
+        fig.update_layout(title='Moving Average Plot for Multiple Columns',
+                          xaxis_title='Date',
+                          yaxis_title='Value')
+        
+        # Display the plot
+        st.plotly_chart(fig)
+
         # Decompose time series into trend, seasonal, and residual components
         try:
             trend, seasonal, residual = decompose_time_series(selected_data['Close'])
