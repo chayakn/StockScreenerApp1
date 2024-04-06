@@ -167,7 +167,7 @@ def main():
 
     # Filter Rows by close column
     # close_slider = st.sidebar.slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max())
-    bidirectional_slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max(), (0.0,30.0)
+    bidirectional_slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max(), default_value=(0.0,30.0)
     selected_data =selected_data[(selected_data['Close'] <= close_slider)]
 
     # Display basic statistics and first few rows
