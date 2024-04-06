@@ -47,12 +47,9 @@ def main():
     st.image(image_url, use_column_width=True)
     st.markdown("<h2><span style='color: blue;'>Stock Screener</span></h2>", unsafe_allow_html=True)
 
-    # # Load data
-    # url = 'https://drive.google.com/file/d/1riceAkRePuCgkG9QzhJ56-2EyQHUK3Qv/view?usp=sharing'
-    # url = 'https://drive.google.com/uc?id=' + url.split('/')[-2]
-    # data = pd.read_csv(url)
+  
     data=calculate_metrics_for_all_stocks()
-    st.write(data)
+    st.dataframe(data)
     
 
  
