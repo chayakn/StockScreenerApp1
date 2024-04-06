@@ -7,5 +7,4 @@ prophet
 datetime
 plotly
 audiorecorder
-speech_recognition
 google-generativeai
