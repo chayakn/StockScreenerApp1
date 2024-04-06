@@ -21,7 +21,7 @@ import google.generativeai as genai
 
 def gem_chat():
 	try:
-	    gemini_api_key = os.environ['GOOGLE_GEMINI_KEY']
+	    gemini_api_key = os.environ['AIzaSyBRkvPVS88S4LkgU2kRj6nBppQbZZMEKEA']
 	    genai.configure(api_key=gemini_api_key)
 	    model = genai.GenerativeModel('gemini-pro')
 	
