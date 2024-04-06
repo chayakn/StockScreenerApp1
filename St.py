@@ -181,14 +181,19 @@ def main():
     st.plotly_chart(fig)
 
     # Decompose time series into trend, seasonal, and residual components
-    trend, seasonal, residual = decompose_time_series(selected_data['Close'])
-    plot_decomposed_components(trend, seasonal, residual)
+    try:
+        trend, seasonal, residual = decompose_time_series(selected_data['Close'])
+        plot_decomposed_components(trend, seasonal, residual)
+    except:
+        pass
 
     # Prophet Forecast
-    st.subheader("Prophet Forecast")
-    forecast = prophet_forecast(selected_data)
-    fig_forecast = plot_prophet_forecast(selected_data, forecast)
-    st.plotly_chart(fig_forecast)
-
+    try:
+        st.subheader("Prophet Forecast")
+        forecast = prophet_forecast(selected_data)
+        fig_forecast = plot_prophet_forecast(selected_data, forecast)
+        st.plotly_chart(fig_forecast)
+    except:
+        pass
 if __name__ == "__main__":
     main()
