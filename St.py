@@ -16,6 +16,10 @@ import math
 from datetime import datetime, timedelta
 import plotly.offline as po
 
+def bidirectional_slider(label, min_value, max_value, default_value):
+    left_value, right_value = st.sidebar.slider(label, min_value=min_value, max_value=max_value, value=(min_value, max_value))
+    return left_value, right_value
+    
 @st.experimental_memo
 def calculate_metrics_for_all_stocks(data):
     
@@ -162,13 +166,14 @@ def main():
     selected_data = data[data['Stock'] == cur_A]
 
     # Filter Rows by close column
-    close_slider = st.sidebar.slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max())
+    # close_slider = st.sidebar.slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max())
+    bidirectional_slider('Close Price', min_value=data['Close'].min(), max_value=data['Close'].max(), (0.0,30.0)
     selected_data =selected_data[(selected_data['Close'] <= close_slider)]
 
     # Display basic statistics and first few rows
     st.subheader(f"Stock Price Analysis for {cur_A}")
     #st.write(selected_data.describe())
-    st.subheader("First Few Rows of Data")
+
     page_number = st.number_input('Page Number', min_value=1, max_value=len(selected_data) // 10 + 1, value=1)
     start_idx = (page_number - 1) * 10
     end_idx = min(start_idx + 10, len(selected_data))
@@ -180,20 +185,21 @@ def main():
     fig = plot_time_series(selected_data, f"Stock Price Analysis for {cur_A}")
     st.plotly_chart(fig)
 
-    # Decompose time series into trend, seasonal, and residual components
-    try:
-        trend, seasonal, residual = decompose_time_series(selected_data['Close'])
-        plot_decomposed_components(trend, seasonal, residual)
-    except:
-        pass
-
-    # Prophet Forecast
-    try:
-        st.subheader("Prophet Forecast")
-        forecast = prophet_forecast(selected_data)
-        fig_forecast = plot_prophet_forecast(selected_data, forecast)
-        st.plotly_chart(fig_forecast)
-    except:
-        pass
+    if selected_data:
+        # Decompose time series into trend, seasonal, and residual components
+        try:
+            trend, seasonal, residual = decompose_time_series(selected_data['Close'])
+            plot_decomposed_components(trend, seasonal, residual)
+        except:
+            pass
+    
+        # Prophet Forecast
+        try:
+            st.subheader("Prophet Forecast")
+            forecast = prophet_forecast(selected_data)
+            fig_forecast = plot_prophet_forecast(selected_data, forecast)
+            st.plotly_chart(fig_forecast)
+        except:
+            pass
 if __name__ == "__main__":
     main()
