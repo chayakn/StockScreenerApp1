@@ -185,7 +185,7 @@ def main():
     fig = plot_time_series(selected_data, f"Stock Price Analysis for {cur_A}")
     st.plotly_chart(fig)
 
-    if selected_data:
+    if len(selected_data)>0:
         # Decompose time series into trend, seasonal, and residual components
         try:
             trend, seasonal, residual = decompose_time_series(selected_data['Close'])
