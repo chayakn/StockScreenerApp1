@@ -67,6 +67,27 @@ def display_first_few_rows(data):
     st.subheader("First Few Rows of Data")
     st.write(data.head())
 
+# Create traces
+trace_macd = go.Scatter(x=selected_data['Date'], y=selected_data['MACD'], mode='lines', name='MACD')
+trace_signal = go.Scatter(x=selected_data['Date'], y=selected_data['MACD_Signal'], mode='lines', name='MACD Signal')
+trace_histogram = go.Bar(x=selected_data['Date'], y=selected_data['MACD_Histogram'], name='MACD Histogram')
+
+# Create figure
+fig = go.Figure()
+
+# Add traces to the figure
+fig.add_trace(trace_macd)
+fig.add_trace(trace_signal)
+fig.add_trace(trace_histogram)
+
+# Update layout
+fig.update_layout(title='MACD Analysis',
+                  xaxis_title='Date',
+                  yaxis_title='Value')
+
+# Show plot
+fig.show()
+
 # Function to plot decomposed components
 def plot_decomposed_components(trend, seasonal, residual):
     st.subheader("Seasonal Decomposition")
