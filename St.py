@@ -170,8 +170,8 @@ def main():
     st.subheader("First Few Rows of Data")
     page_number = st.number_input('Page Number', min_value=1, max_value=len(selected_data) // 10 + 1, value=1)
     start_idx = (page_number - 1) * 10
-    end_idx = min(start_idx + 10, len(filtered_df))
-    paginated_df = filtered_df.iloc[start_idx:end_idx]
+    end_idx = min(start_idx + 10, len(selected_data))
+    paginated_df = selected_data.iloc[start_idx:end_idx]
     st.write(paginated_df)
     # st.dataframe(selected_data)
     # Plot time series data
