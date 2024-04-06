@@ -109,11 +109,28 @@ def main():
     url = 'https://drive.google.com/file/d/1riceAkRePuCgkG9QzhJ56-2EyQHUK3Qv/view?usp=sharing'
     url = 'https://drive.google.com/uc?id=' + url.split('/')[-2]
     data = pd.read_csv(url)
-
+    
     
     # Convert 'Date' column to datetime format and set it as index
     data['Date'] = pd.to_datetime(data['Date'])
     data.set_index('Date', inplace=True)
+
+
+    #rsi
+    delta = data['Close'].diff()
+
+    # Separate gains and losses
+    gain = (delta.where(delta > 0, 0)).rolling(window=rsi_period).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=rsi_period).mean()
+
+    # Calculate RS (Relative Strength)
+    rs = gain / loss
+
+    # Calculate RSI
+    rsi = 100 - (100 / (1 + rs))
+
+    # Assign RSI values to the DataFrame
+    data['RSI'] = rsi
 
     # Sidebar - Select stock and forecast date range
     st.sidebar.title("Select Stock data to be filtered")
