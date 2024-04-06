@@ -68,9 +68,9 @@ def display_first_few_rows(data):
     st.write(data.head())
 
 # Create traces
-trace_macd = go.Scatter(x=selected_data['Date'], y=selected_data['MACD'], mode='lines', name='MACD')
-trace_signal = go.Scatter(x=selected_data['Date'], y=selected_data['MACD_Signal'], mode='lines', name='MACD Signal')
-trace_histogram = go.Bar(x=selected_data['Date'], y=selected_data['MACD_Histogram'], name='MACD Histogram')
+trace_macd = go.Scatter(x=selected_data.index, y=selected_data['MACD'], mode='lines', name='MACD')
+trace_signal = go.Scatter(x=selected_data.index, y=selected_data['MACD_Signal'], mode='lines', name='MACD Signal')
+trace_histogram = go.Bar(x=selected_data.index, y=selected_data['MACD_Histogram'], name='MACD Histogram')
 
 # Create figure
 fig = go.Figure()
