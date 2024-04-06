@@ -200,7 +200,8 @@ def main():
     Flag = True
     if st.sidebar.button("ALL STOCK DATA"):
         # Calculate metrics for all stocks
-        calculate_metrics_for_all_stocks(data)
+        data=calculate_metrics_for_all_stocks(data)
+        st.dataframe(data)
         Flag = False
     if Flag:
         # Filter data for selected stock
