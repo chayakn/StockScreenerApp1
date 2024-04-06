@@ -1,4 +1,4 @@
-import streamlit as st
+1import streamlit as st
 st. set_page_config(layout="wide")
 col1, col2 = st.columns([1, 3], gap = 'medium')
 import numpy as np
@@ -108,7 +108,7 @@ def plot_prophet_forecast(data, forecast):
 # Main function
 def main():
     image_url = "https://raw.githubusercontent.com/swathi0710/StockScreenerApp1/main/stock-market-6368031_640.jpg"
-    st.image(image_url,width=50)
+    st.image(image_url,width=150)
     st.markdown("<h2><span style='color: blue;'>Stock Screener</span></h2>", unsafe_allow_html=True)
 
     # Load data
