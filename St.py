@@ -16,6 +16,36 @@ import math
 from datetime import datetime, timedelta
 import plotly.offline as po
 import st2 as page2
+import google.generativeai as genai
+
+def gem_chat():
+	try:
+		gemini_api_key = os.environ['GOOGLE_GEMINI_KEY']
+		genai.configure(api_key=gemini_api_key)
+		model = genai.GenerativeModel('gemini-pro')
+
+		if "chat" not in st.session_state:
+		  st.session_state.chat = model.start_chat(history=[])
+		st.title('Gemini Pro Test')
+
+		def role_to_streamlit(role: str) -> str:
+		  if role == 'model':
+			return 'assistant'
+		  else:
+			return role
+
+		for message in st.session_state.chat.history:
+		  with st.chat_message(role_to_streamlit(message.role)):
+			st.markdown(message.parts[0].text)
+
+		if prompt := st.chat_input("I possess a well of knowledge. What would you like to know?"):
+		  st.chat_message("user").markdown(prompt)
+		  response = st.session_state.chat.send_message(prompt)
+		  with st.chat_message("assistant"):
+			st.markdown(response.text)
+	except Exception as e:
+		st.error(f'An error occurred: {e}')
+
 
 def bidirectional_slider(label, min_value, max_value, default_value):
     left_value, right_value = st.sidebar.slider(label, min_value=min_value, max_value=max_value, value=(min_value, max_value))
@@ -219,11 +249,7 @@ def main():
         fig = plot_time_series(selected_data, f"Stock Price Analysis for {cur_A}")
         st.plotly_chart(fig)
     
-        prompt = st.chat_input("Ask Something")
-        if prompt != "":
-            st.write("HI")
-        else:
-            st.write(prompt)
+        
     
         if len(selected_data)>0:
                          
@@ -241,6 +267,7 @@ def main():
                 st.plotly_chart(fig_forecast)
             except:
                 pass
+    gem_chat()
 
 if __name__ == "__main__":
     main()
