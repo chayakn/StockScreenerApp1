@@ -79,15 +79,7 @@ def calculate_metrics_for_all_stocks(data):
         })], ignore_index=True)
         
         # columns_with_bidirectional_slider = ['Volume', 'Market Capping', 'Change percentage', 'P/E', 'Dividend Yield %']
-        columns_with_bidirectional_slider = ['Change percentage', 'P/E', 'Dividend Yield %']
-        # Filter Rows by close column
-        data = summary_data
-        for col in columns_with_bidirectional_slider:
-            try:
-                low, up = bidirectional_slider(col, min_value=0, max_value=100, default_value=(0.0, 30.0))
-                data = data[(data[col] >= low) & (data[col] <= up)]
-            except:
-                pass
+
         Flag = False
     return data,Flag
     
@@ -202,6 +194,15 @@ def main():
     if st.sidebar.button("ALL STOCK DATA"):
         # Calculate metrics for all stocks
         data,Flag=calculate_metrics_for_all_stocks(data)
+        columns_with_bidirectional_slider = ['Change percentage', 'P/E', 'Dividend Yield %']
+        # Filter Rows by close column
+        data = summary_data
+        for col in columns_with_bidirectional_slider:
+            try:
+                low, up = bidirectional_slider(col, min_value=0, max_value=100, default_value=(0.0, 30.0))
+                data = data[(data[col] >= low) & (data[col] <= up)]
+            except:
+                pass
         st.dataframe(data)
         Flag = False
     if Flag:
