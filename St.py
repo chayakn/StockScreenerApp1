@@ -150,7 +150,7 @@ def plot_prophet_forecast(data, forecast):
 # Main function
 def main():
     image_url = "https://raw.githubusercontent.com/swathi0710/StockScreenerApp1/main/stock-market-6368031_640.jpg"
-    st.image(image_url, width=450)
+    st.image(image_url, width=450,align="center")
     st.markdown("<h2><span style='color: blue;'>Stock Screener</span></h2>", unsafe_allow_html=True)
 
     # Load data
