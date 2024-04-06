@@ -136,7 +136,7 @@ def main():
     short_ema = data['Close'].ewm(span=12, adjust=False).mean()
     long_ema = data['Close'].ewm(span=26, adjust=False).mean()
     macd_line = short_ema - long_ema
-    signal_line = macd_line.ewm(span=macd_signal_period, adjust=False).mean()
+    signal_line = macd_line.ewm(span=12, adjust=False).mean()
     macd_histogram = macd_line - signal_line
 
 
