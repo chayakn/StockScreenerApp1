@@ -107,7 +107,7 @@ def plot_prophet_forecast(data, forecast):
 
 # Main function
 def main():
-    image_url = "https://github.com/swathi0710/StockScreenerApp1/blob/main/stock-market-6368031_640.jpg"
+    image_url = "https://raw.githubusercontent.com/swathi0710/StockScreenerApp1/main/stock-market-6368031_640.jpg"
     st.image(image_url, use_column_width=True)
     st.markdown("<h2><span style='color: blue;'>Stock Screener</span></h2>", unsafe_allow_html=True)
 
