@@ -21,7 +21,7 @@ Flag=True
 def gem_chat():
     try:
         # gemini_api_key = os.environ['GOOGLE_GEMINI_KEY']
-        genai.configure(api_key="AIzaSyBRkvPVS88S4LkgU2kRj6nBppQbZZMEKEA")
+        genai.configure(api_key="")
         model = genai.GenerativeModel('gemini-pro')
         
         if "chat" not in st.session_state:
